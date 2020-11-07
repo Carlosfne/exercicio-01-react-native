@@ -13,7 +13,7 @@ import api from "./services/api";
 
 export default function App() {
   const [ repositories, setRepositories ] = useState([])
-  const [ repo, setRepo ] = useState([])
+  const [ repo_, setRepo ] = useState([])
   
   useEffect(()=>{
     api.get('/repositories')
@@ -23,7 +23,7 @@ export default function App() {
   async function handleLikeRepository(id) {
     const response = await api.post(`/repositories/${ id }/like`);
 
-    setRepo(response.data)
+    const repo = response.data
 
     const likesUp = repositories.map(liked => {
       if( liked.id === id){
@@ -45,24 +45,24 @@ export default function App() {
           keyExtractor={repo => repo.id}
           renderItem={({ item })=>(
             <View style={styles.repositoryContainer}>
-              <Text style={styles.repository}>{ item.title }</Text>
+              <Text style={styles.repository}>{ item.title }</Text>            
 
-              {/* <View style={styles.techsContainer}>
+              <View style={styles.techsContainer}>
                 {
-                  repo.techs.map(tech=>(
+                  item.techs.map(tech=>(
                     <Text key={tech} style={styles.tech}>
                       { tech }
                     </Text>
                   ))
                 }
-              </View> */}
+              </View>
 
               <View style={styles.likesContainer}>
                 <Text
                   style={styles.likeText}                  
                   testID={`repository-likes-${item.id}`}
                 >
-                  { repo.likes } curtidas
+                  { item.likes } curtidas
                 </Text>
               </View>
 
