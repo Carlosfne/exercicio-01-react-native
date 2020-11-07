@@ -13,6 +13,7 @@ import api from "./services/api";
 
 export default function App() {
   const [ repositories, setRepositories ] = useState([])
+  const [ repo, setRepo ] = useState([])
   
   useEffect(()=>{
     api.get('/repositories')
@@ -22,7 +23,7 @@ export default function App() {
   async function handleLikeRepository(id) {
     const response = await api.post(`/repositories/${ id }/like`);
 
-    const repo = response.data;
+    setRepo(response.data)
 
     const likesUp = repositories.map(liked => {
       if( liked.id === id){
@@ -46,7 +47,7 @@ export default function App() {
             <View style={styles.repositoryContainer}>
               <Text style={styles.repository}>{ item.title }</Text>
 
-              <View style={styles.techsContainer}>
+              {/* <View style={styles.techsContainer}>
                 {
                   repo.techs.map(tech=>(
                     <Text key={tech} style={styles.tech}>
@@ -54,7 +55,7 @@ export default function App() {
                     </Text>
                   ))
                 }
-              </View>
+              </View> */}
 
               <View style={styles.likesContainer}>
                 <Text
@@ -67,8 +68,7 @@ export default function App() {
 
               <TouchableOpacity
                 style={styles.button}
-                onPress={() => handleLikeRepository( item.id )}
-                // Remember to replace "1" below with repository ID: {`like-button-${repository.id}`}
+                onPress={() => handleLikeRepository( item.id )}                
                 testID={`like-button-${ item.id }`}
               >
                 <Text style={styles.buttonText}>Curtir</Text>
